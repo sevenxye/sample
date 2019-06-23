@@ -35,6 +35,14 @@ class User extends Authenticatable
         });
     }
 
+    //一个用户，拥有多条微博
+    public function statuses(){
+        return $this->hasMany(Status::class);
+        //$this->hasMany(Status::class, foreign_key, local_key);
+        //$this->hasMany(Status::class, user_id, id)
+        //原生sql  select * from user u join statuses s on u.id = s.user_id 
+    }
+
     //获取用户头像
     public function gravatar($size = '100')
     {
@@ -45,5 +53,10 @@ class User extends Authenticatable
     //发送密码重置邮件
     public function sendPasswordResetNotification($token){
         $this->notify(new ResetPassword($token));
+    }
+
+    //当前用户发布过的微博
+    public function feed(){
+        return $this->statuses()->orderBy('created', 'desc');
     }
 }

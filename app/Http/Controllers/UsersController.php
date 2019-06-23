@@ -24,8 +24,11 @@ class UsersController extends Controller
 
     //用户列表
     public function index(){
+        //显示用户列表
         $users = User::paginate(10);
         return view('users.index', compact('users'));
+        
+        
     }
 
     //註冊頁面
@@ -35,7 +38,12 @@ class UsersController extends Controller
 
     //显示用户信息
     public function show(User $user){
-        return view('users.show', compact('user'));
+        // return view('users.show', compact('user'));
+        //显示用户和微博
+        $statuses = $user->statuses()
+                           ->orderBy('created_at', 'desc')
+                           ->paginate(30);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     //创建用户
