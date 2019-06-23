@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use Auth;
 class SessionsController extends Controller
 {
+    function __construct(){
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+    
     //登录界面
     public function create(){
         return view('sessions.create');
